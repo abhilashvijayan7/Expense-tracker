@@ -1,16 +1,15 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Box, Button, Paper, Typography, Grid } from '@mui/material';
-import { InputField } from '../../component_library/InputField';
+import { Box, Button, Paper, Typography, Grid } from '@mui/material';import { InputField } from '../../component_library/InputField';
 import { SelectInput, SelectOption } from '../../component_library/SelectInput';
 
 export interface ExpenseFormProps {
   onSubmit: (transaction: {
-    title: string;
+    name: string;
     amount: number;
-    type: 'income' | 'expense';
-    category: string;
+    category: "Software & Subscription" | "Housing & Rent" | "Food & Dining" | "Groceries" | "Utilities" | "Investment" | "Income" | "Other";
+    date: string;
   }) => void;
 }
 
@@ -20,37 +19,40 @@ export function ExpenseForm({ onSubmit }: ExpenseFormProps) {
   const [type, setType] = useState('expense');
   const [category, setCategory] = useState('');
 
-  // Dropdown options matching our system architecture configuration
   const transactionTypes: SelectOption[] = [
     { value: 'income', label: 'Income (+)' },
     { value: 'expense', label: 'Expense (-)' },
   ];
 
+  // Exactly matches your shared strict category types definition
   const categories: SelectOption[] = [
-    { value: 'salary', label: 'Salary & Freelance' },
-    { value: 'housing', label: 'Housing & Rent' },
-    { value: 'groceries', label: 'Groceries' },
-    { value: 'utilities', label: 'Utilities & Bills' },
-    { value: 'entertainment', label: 'Entertainment' },
+    { value: 'Income', label: 'Salary & Freelance' },
+    { value: 'Housing & Rent', label: 'Housing & Rent' },
+    { value: 'Groceries', label: 'Groceries' },
+    { value: 'Utilities', label: 'Utilities & Bills' },
+    { value: 'Software & Subscription', label: 'Software & Subscriptions' },
+    { value: 'Investment', label: 'Investments' },
+    { value: 'Other', label: 'Other' },
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Basic structural form validation
     if (!title.trim() || !amount || !category) {
       alert('Please fill out all fields before submitting.');
       return;
     }
 
+    const parsedAmount = parseFloat(amount);
+
     onSubmit({
-      title: title.trim(),
-      amount: parseFloat(amount),
-      type: type as 'income' | 'expense',
-      category,
+      name: title.trim(),
+      // Enforce signed values: if it's an expense, convert it to a negative number automatically
+      amount: type === 'expense' ? -Math.abs(parsedAmount) : Math.abs(parsedAmount),
+      category: category as any,
+      date: new Date().toISOString().split('T')[0], // Sets a valid current date string 'YYYY-MM-DD'
     });
 
-    // Reset local form states cleanly after a successful submit event
     setTitle('');
     setAmount('');
     setCategory('');
@@ -64,7 +66,6 @@ export function ExpenseForm({ onSubmit }: ExpenseFormProps) {
       
       <Box component="form" onSubmit={handleSubmit} noValidate>
         <Grid container spacing={2}>
-          {/* Updated to modern MUI size prop layout object syntax */}
           <Grid size={{ xs: 12, sm: 6 }}>
             <InputField
               label="Transaction Title"

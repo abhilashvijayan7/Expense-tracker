@@ -1,27 +1,56 @@
 "use client";
 
-import React from 'react';
-import { Typography, Container, Stack } from '@mui/material';
-// Absolute path imports using the '@' alias pointing to your library
-import { 
-  TotalBalanceCardComposition, 
-  MonthlyIncomeCardComposition, 
-  MonthlyExpensesCardComposition 
-} from '@/component_library/MetricCard/MetricCard.composition';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Box, CircularProgress } from '@mui/material';
 
-export default function DashboardPage() {
+// Import our async-aligned routing views
+import { LoginView } from './views/LoginView'
+import { RegisterView } from './views/RegisterView';
+import { DashboardView } from './views/DashboardView';
+import { LedgerView } from './views/LedgerView';
+
+// Import state management pipelines
+import { fetchTransactionsAsync } from '../shared_features/store/expenseSlice';
+import { RootState } from '../shared_features/store';
+
+export type ActiveRoute = 'login' | 'register' | 'dashboard' | 'ledger';
+
+export default function AppRouterContainer() {
+  const dispatch = useDispatch();
+  const [currentRoute, setCurrentRoute] = useState<ActiveRoute>('login');
+  
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const isAuthLoading = useSelector((state: RootState) => state.auth.loading);
+
+  // Sync state lifecycle: runs on page reloads to restore data bounds seamlessly
+  useEffect(() => {
+    if (isAuthenticated && currentUser) {
+      dispatch(fetchTransactionsAsync(currentUser.id) as any);
+      // Retain the user's dashboard location on a fresh reload
+      if (currentRoute === 'login' || currentRoute === 'register') {
+        setCurrentRoute('dashboard');
+      }
+    } else {
+      setCurrentRoute('login');
+    }
+  }, [isAuthenticated, currentUser, dispatch]);
+
+  if (isAuthLoading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: '#f8f9fa' }}>
+        <CircularProgress size={50} thickness={4} sx={{ color: '#3f51b5' }} />
+      </Box>
+    );
+  }
+
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold', mb: 4 }}>
-        Executive Overview Baseline
-      </Typography>
-
-      {/* Stack renders our primitive library elements horizontally with clean spacing */}
-      <Stack direction={{ xs: 'column', md: 'row' }} spacing={3}>
-        <TotalBalanceCardComposition />
-        <MonthlyIncomeCardComposition />
-        <MonthlyExpensesCardComposition />
-      </Stack>
-    </Container>
+    <Box>
+      {currentRoute === 'login' && <LoginView onNavigate={setCurrentRoute} />}
+      {currentRoute === 'register' && <RegisterView onNavigate={setCurrentRoute} />}
+      {currentRoute === 'dashboard' && <DashboardView onNavigate={setCurrentRoute} />}
+      {currentRoute === 'ledger' && <LedgerView onNavigate={setCurrentRoute} />}
+    </Box>
   );
 }

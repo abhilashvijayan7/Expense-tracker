@@ -27,12 +27,12 @@ describe('ExpenseForm Core Business Component Unit Tests', () => {
     const submitButton = screen.getByRole('button', { name: /save transaction/i });
     await userEvent.click(submitButton);
 
-    // 4. Assert structural contract completion values match accurately
+    // 4. Assert structural contract completion values match your strict global types layout
     expect(mockOnSubmit).toHaveBeenCalledWith({
-      title: 'Monthly Internet Bill',
-      amount: 75.5,
-      type: 'expense',
-      category: 'utilities',
+      name: 'Monthly Internet Bill',
+      amount: -75.5, // Correctly transformed to negative for expense types
+      category: 'Utilities', // Correctly capitalized matching system types
+      date: new Date().toISOString().split('T')[0], // Current dynamic date match
     });
   });
 });
