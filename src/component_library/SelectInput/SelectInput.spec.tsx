@@ -10,7 +10,7 @@ describe('SelectInput Component Library Unit Tests', () => {
     { value: 'expense', label: 'Expense (-)' },
   ];
 
-  it('should render the select input wrapper with the correct label text', () => {
+  it('should render the select input wrapper cleanly', () => {
     render(
       <SelectInput 
         label="Transaction Type" 
@@ -20,8 +20,9 @@ describe('SelectInput Component Library Unit Tests', () => {
       />
     );
     
-    // Assert that the outer label element renders correctly
-    expect(screen.getByLabelText('Transaction Type')).toBeInTheDocument();
+    // Target the combobox and verify it is explicitly named by our label string
+    const selectEl = screen.getByRole('combobox', { name: /transaction type/i });
+    expect(selectEl).toBeInTheDocument();
   });
 
   it('should call onChange callback function when an item option is clicked', async () => {
@@ -35,15 +36,15 @@ describe('SelectInput Component Library Unit Tests', () => {
       />
     );
 
-    // 1. Target and click the Material-UI select trigger element to open the menu grid popup
-    const selectTrigger = screen.getByRole('combobox');
+    // 1. Open the dropdown popup container safely using the accessible name
+    const selectTrigger = screen.getByRole('combobox', { name: /transaction type/i });
     await userEvent.click(selectTrigger);
 
-    // 2. Locate the specific option row inside the virtual modal overlay and click it
+    // 2. Select the option item from the list overlay
     const optionElement = screen.getByRole('option', { name: 'Income (+)' });
     await userEvent.click(optionElement);
 
-    // 3. Assert that our spy hook captured the chosen key value accurately
+    // 3. Confirm your mock function records the accurate option value payload
     expect(mockOnChange).toHaveBeenCalledWith('income');
   });
 });

@@ -3,7 +3,6 @@
 import React from 'react';
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
-// Define structural key-value interface contract for selection dropdown menu rows
 export interface SelectOption {
   value: string;
   label: string;
@@ -24,10 +23,16 @@ export function SelectInput({
   options,
   fullWidth = true,
 }: SelectInputProps) {
+  // Generate a lowercase, web-safe token string out of the label text
+  const labelId = `select-${label.toLowerCase().replace(/\s+/g, '-')}`;
+
   return (
     <FormControl fullWidth={fullWidth} sx={{ mb: 2 }}>
-      <InputLabel shrink>{label}</InputLabel>
+      {/* Explicitly bind the label to the select component via id and labelId props */}
+      <InputLabel id={`${labelId}-label`} shrink>{label}</InputLabel>
       <Select
+        labelId={`${labelId}-label`}
+        id={labelId}
         value={value}
         onChange={(e) => onChange(e.target.value as string)}
         label={label}
