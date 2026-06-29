@@ -11,16 +11,13 @@ export interface MetricCardProps {
 }
 
 export function MetricCard({ title, value, textColor, icon }: MetricCardProps) {
-  // Convert value to a string safely to look for minus signs
   const stringValue = String(value);
   const upperTitle = title.toUpperCase();
   const isNegative = stringValue.includes('-');
 
-  // Define semantic dashboard status colors
-  const defaultGreen = '#2e7d32'; // Deep Emerald Green for income / safe states
-  const defaultRed = '#c62828';   // Deep Crimson Red for expenses / overdrawn states
+  const defaultGreen = '#2e7d32'; 
+  const defaultRed = '#c62828';   
 
-  // Self-calculate final text rendering color if explicit textColor wasn't provided
   let computedTextColor = textColor || 'inherit';
 
   if (!textColor) {
@@ -40,7 +37,6 @@ export function MetricCard({ title, value, textColor, icon }: MetricCardProps) {
         borderRadius: 2, 
         minWidth: 240, 
         backgroundColor: '#ffffff',
-        // Optional: Adds a matching colored left border accent line for better visual separation
         borderLeft: computedTextColor !== 'inherit' ? `5px solid ${computedTextColor}` : 'none'
       }}
     >

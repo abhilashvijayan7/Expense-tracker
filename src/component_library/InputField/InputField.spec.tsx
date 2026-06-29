@@ -15,9 +15,7 @@ describe('InputField Component Library Unit Tests', () => {
       />
     );
     
-    // Assert the label is present
     expect(screen.getByLabelText('Transaction Title')).toBeInTheDocument();
-    // Assert the placeholder text attribute matches cleanly
     expect(screen.getByPlaceholderText('Enter name...')).toBeInTheDocument();
   });
 
@@ -32,11 +30,26 @@ describe('InputField Component Library Unit Tests', () => {
     );
     
     const inputElement = screen.getByLabelText('Test Input');
-    
-    // Simulate user typing a character into the input field
     await userEvent.type(inputElement, 'A');
     
-    // Assert that our callback handler was notified correctly
     expect(mockOnChange).toHaveBeenCalledWith('A');
+  });
+
+  // ✅ Verification validation layer test execution mapping
+  it('should cleanly present explicit helper errors when the error flag state is set to true', () => {
+    const fallbackMessage = 'Strict alphanumeric title sequence requirement failed.';
+    
+    render(
+      <InputField 
+        label="Validated Input Field" 
+        value="" 
+        onChange={() => {}} 
+        error={true}
+        helperText={fallbackMessage}
+      />
+    );
+    
+    const errorTextElement = screen.getByText(fallbackMessage);
+    expect(errorTextElement).toBeInTheDocument();
   });
 });

@@ -20,7 +20,6 @@ describe('SelectInput Component Library Unit Tests', () => {
       />
     );
     
-    // Target the combobox and verify it is explicitly named by our label string
     const selectEl = screen.getByRole('combobox', { name: /transaction type/i });
     expect(selectEl).toBeInTheDocument();
   });
@@ -36,15 +35,32 @@ describe('SelectInput Component Library Unit Tests', () => {
       />
     );
 
-    // 1. Open the dropdown popup container safely using the accessible name
     const selectTrigger = screen.getByRole('combobox', { name: /transaction type/i });
     await userEvent.click(selectTrigger);
 
-    // 2. Select the option item from the list overlay
     const optionElement = screen.getByRole('option', { name: 'Income (+)' });
     await userEvent.click(optionElement);
 
-    // 3. Confirm your mock function records the accurate option value payload
     expect(mockOnChange).toHaveBeenCalledWith('income');
+  });
+
+  // ✅ New Test Case: Verifies your fresh form validation features work
+  it('should display the helper text message cleanly when error state is active', () => {
+    const customErrorMessage = 'Please select an allocation ledger category account.';
+    
+    render(
+      <SelectInput 
+        label="Transaction Type" 
+        value="" 
+        onChange={() => {}} 
+        options={mockOptions} 
+        error={true}
+        helperText={customErrorMessage}
+      />
+    );
+
+    // Search for the error string text inside the rendered DOM tree
+    const errorTextElement = screen.getByText(customErrorMessage);
+    expect(errorTextElement).toBeInTheDocument();
   });
 });

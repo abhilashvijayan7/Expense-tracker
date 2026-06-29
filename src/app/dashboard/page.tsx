@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
+// ✅ 1. Update this import header line to target Grid2
 import { Box, Typography, Grid as Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, CircularProgress } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
@@ -20,11 +21,10 @@ export default function DashboardPage() {
   const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
   const rawTransactions = useSelector(selectUserExpenses);
 
-  // 1. Add a mount tracking state
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true); // Triggers right after browser placement is secure
+    setIsMounted(true);
   }, []);
 
   useEffect(() => {
@@ -56,7 +56,6 @@ export default function DashboardPage() {
     router.push('/login');
   };
 
-  // 2. Prevent hydration mismatch by returning a consistent shell until mounted
   if (!isMounted || !user) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: '#f8f9fa' }}>
@@ -67,6 +66,7 @@ export default function DashboardPage() {
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#f8f9fa' }}>
+      {/* Sidebar Navigation */}
       <Paper square elevation={1} sx={{ width: 260, bgcolor: '#ffffff', display: 'flex', flexDirection: 'column' }}>
         <Box sx={{ p: 3, borderBottom: '1px solid #edf2f7' }}>
           <Typography variant="h5" sx={{ fontWeight: 800, color: '#1e3a8a' }}>FinTrack</Typography>
@@ -91,13 +91,17 @@ export default function DashboardPage() {
         </Box>
       </Paper>
 
+      {/* Main Content Area */}
       <Box sx={{ flexGrow: 1, p: 4 }}>
         <Typography variant="h4" sx={{ fontWeight: 700, mb: 4 }}>Executive Overview</Typography>
+        
+        {/* ✅ 2. This size format now maps flawlessly to the Grid2 layout motor */}
         <Grid container spacing={3} sx={{ mb: 4 }}>
           <Grid size={{ xs: 12, sm: 4 }}><MetricCard title="TOTAL BALANCE" value={`₹${netBalance.toFixed(2)}`} /></Grid>
           <Grid size={{ xs: 12, sm: 4 }}><MetricCard title="MONTHLY INCOME" value={`₹${totalIncome.toFixed(2)}`} /></Grid>
           <Grid size={{ xs: 12, sm: 4 }}><MetricCard title="MONTHLY EXPENSES" value={`₹${totalExpenses.toFixed(2)}`} /></Grid>
         </Grid>
+        
         <ExpenseForm onSubmit={handleFormSubmit} />
       </Box>
     </Box>

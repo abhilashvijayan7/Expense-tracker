@@ -3,7 +3,7 @@
 import React from 'react';
 import { 
   Table, TableBody, TableCell, TableContainer, 
-  TableHead, TableRow, Paper, Typography, IconButton, Chip 
+  TableHead, TableRow, Paper, Typography, IconButton, Chip, Box
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -22,69 +22,78 @@ export interface TransactionTableProps {
 }
 
 export function TransactionTable({ transactions, onDelete }: TransactionTableProps) {
-  // Simple helper to capitalize category labels cleanly
-  const formatCategory = (cat: string) => cat.charAt(0).toUpperCase() + cat.slice(1);
-
   return (
-    <TableContainer component={Paper} elevation={2} sx={{ borderRadius: 2, overflow: 'hidden' }}>
+    <TableContainer 
+      component={Paper} 
+      elevation={2} 
+      sx={{ 
+        borderRadius: 2, 
+        overflow: 'hidden',
+        width: '100%',
+        overflowX: 'auto' // ✅ Enforces full responsiveness on small touch screens
+      }}
+    >
       {transactions.length === 0 ? (
-        <Typography variant="body1" sx={{ p: 4, textAlign: 'center', color: '#777' }}>
+        <Typography variant="body1" sx={{ p: 4, textAlign: 'center', color: '#64748b' }}>
           No transactions recorded yet. Use the form above to add your first transaction history item.
         </Typography>
       ) : (
-        <Table sx={{ minWidth: 600 }} aria-label="transaction history ledger">
-          <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
-            <TableRow>
-              <TableCell sx={{ fontWeight: 'bold' }}>Title</TableCell>
-              <TableCell sx={{ fontWeight: 'bold' }}>Category</TableCell>
-              <TableCell sx={{ fontWeight: 'bold' }}>Type</TableCell>
-              <TableCell sx={{ fontWeight: 'bold' }} align="right">Amount</TableCell>
-              <TableCell sx={{ fontWeight: 'bold' }} align="center">Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {transactions.map((row) => (
-              <TableRow key={row.id} hover sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell sx={{ fontWeight: 500 }}>{row.title}</TableCell>
-                <TableCell>
-                  <Chip 
-                    label={formatCategory(row.category)} 
-                    size="small" 
-                    variant="outlined" 
-                    sx={{ borderRadius: 1 }}
-                  />
-                </TableCell>
-                <TableCell>
-                  <Chip
-                    label={row.type.toUpperCase()}
-                    size="small"
-                    color={row.type === 'income' ? 'success' : 'error'}
-                    sx={{ fontWeight: 'bold', borderRadius: 1 }}
-                  />
-                </TableCell>
-                <TableCell 
-                  align="right" 
-                  sx={{ 
-                    fontWeight: 'bold', 
-                    color: row.type === 'income' ? '#2e7d32' : '#d32f2f' 
-                  }}
-                >
-                  {row.type === 'income' ? '+' : '-'}${row.amount.toFixed(2)}
-                </TableCell>
-                <TableCell align="center">
-                  <IconButton 
-                    aria-label={`delete transaction ${row.title}`} 
-                    color="error" 
-                    onClick={() => onDelete(row.id)}
-                    size="small"
-                  >
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
-                </TableCell>
+        <Box sx={{ minWidth: 600 }}> {/* Guarantees layout structural baseline inside scroll containers */}
+          <Table aria-label="transaction history ledger">
+            <TableHead sx={{ backgroundColor: '#f8fafc' }}>
+              <TableRow>
+                <TableCell sx={{ fontWeight: 700, color: '#334155' }}>Title</TableCell>
+                <TableCell sx={{ fontWeight: 700, color: '#334155' }}>Category</TableCell>
+                <TableCell sx={{ fontWeight: 700, color: '#334155' }}>Type</TableCell>
+                <TableCell sx={{ fontWeight: 700, color: '#334155' }} align="right">Amount</TableCell>
+                <TableCell sx={{ fontWeight: 700, color: '#334155' }} align="center">Actions</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {transactions.map((row) => (
+                <TableRow key={row.id} hover sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell sx={{ fontWeight: 600, color: '#1e293b' }}>{row.title}</TableCell>
+                  <TableCell>
+                    <Chip 
+                      label={row.category} 
+                      size="small" 
+                      variant="outlined" 
+                      sx={{ borderRadius: 1, fontWeight: 500 }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Chip
+                      label={row.type.toUpperCase()}
+                      size="small"
+                      color={row.type === 'income' ? 'success' : 'error'}
+                      sx={{ fontWeight: 'bold', borderRadius: 1 }}
+                    />
+                  </TableCell>
+                  <TableCell 
+                    align="right" 
+                    sx={{ 
+                      fontWeight: 700, 
+                      color: row.type === 'income' ? '#2e7d32' : '#c62828' 
+                    }}
+                  >
+                    {/* ✅ Updated currency symbol formatting to Rupee strings */}
+                    {row.type === 'income' ? '+' : '-'}₹{Math.abs(row.amount).toFixed(2)}
+                  </TableCell>
+                  <TableCell align="center">
+                    <IconButton 
+                      aria-label={`delete transaction ${row.title}`} 
+                      color="error" 
+                      onClick={() => onDelete(row.id)}
+                      size="small"
+                    >
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Box>
       )}
     </TableContainer>
   );

@@ -2,18 +2,19 @@
 
 import React, { useState } from 'react';
 import { SelectInput, SelectOption } from './SelectInput';
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography, FormControlLabel, Checkbox } from '@mui/material';
 
 export function SelectInputComposition() {
   const [category, setCategory] = useState('');
   const [type, setType] = useState('expense');
+  const [simulateError, setSimulateError] = useState(false);
 
-  // Hardcoded mock collections mapping exactly to our FinTrack state requirements
+  // Synchronized directly with core business domain enums
   const budgetCategories: SelectOption[] = [
-    { value: 'housing', label: 'Housing & Rent' },
-    { value: 'groceries', label: 'Groceries' },
-    { value: 'utilities', label: 'Utilities & Bills' },
-    { value: 'entertainment', label: 'Entertainment' },
+    { value: 'Housing & Rent', label: 'Housing & Rent' },
+    { value: 'Groceries', label: 'Groceries' },
+    { value: 'Utilities', label: 'Utilities & Bills' },
+    { value: 'Other', label: 'Other Accounts' },
   ];
 
   const transactionTypes: SelectOption[] = [
@@ -22,9 +23,12 @@ export function SelectInputComposition() {
   ];
 
   return (
-    <Paper elevation={3} sx={{ p: 4, maxWidth: 500, borderRadius: 2 }}>
-      <Typography variant="h6" sx={{ mb: 3, fontWeight: 'bold', color: '#3f51b5' }}>
+    <Paper elevation={3} sx={{ p: 4, maxWidth: 500, borderRadius: 2, bgcolor: '#ffffff' }}>
+      <Typography variant="h6" sx={{ mb: 1, fontWeight: 'bold', color: '#3f51b5' }}>
         Dropdown Selection Sandbox
+      </Typography>
+      <Typography variant="body2" sx={{ mb: 3, color: '#64748b' }}>
+        Interactive testing frame for verification of selection drop menu behaviors.
       </Typography>
 
       {/* 1. Transaction Type Dropdown Selection */}
@@ -41,7 +45,22 @@ export function SelectInputComposition() {
         value={category}
         onChange={setCategory}
         options={budgetCategories}
+        error={simulateError && !category}
+        helperText={simulateError && !category ? 'Please select an allocation ledger category account.' : ''}
       />
+
+      <Box sx={{ mt: 1, pt: 2, borderTop: '1px dashed #e2e8f0' }}>
+        <FormControlLabel
+          control={
+            <Checkbox 
+              checked={simulateError} 
+              onChange={(e) => setSimulateError(e.target.checked)} 
+              color="primary"
+            />
+          }
+          label={<Typography variant="body2" sx={{ color: '#475569', fontWeight: 500 }}>Simulate active validation errors</Typography>}
+        />
+      </Box>
     </Paper>
   );
 }

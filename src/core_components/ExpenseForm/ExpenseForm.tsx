@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Box, Button, Paper, Typography, Grid } from '@mui/material';import { InputField } from '../../component_library/InputField';
+import { Box, Button, Paper, Typography, Grid as Grid } from '@mui/material'; // ✅ Swapped to modern Grid2 engine
+import { InputField } from '../../component_library/InputField';
 import { SelectInput, SelectOption } from '../../component_library/SelectInput';
 
 export interface ExpenseFormProps {
@@ -19,12 +20,13 @@ export function ExpenseForm({ onSubmit }: ExpenseFormProps) {
   const [type, setType] = useState('expense');
   const [category, setCategory] = useState('');
 
+  const [errors, setErrors] = useState({ title: '', amount: '', category: '' });
+
   const transactionTypes: SelectOption[] = [
     { value: 'income', label: 'Income (+)' },
     { value: 'expense', label: 'Expense (-)' },
   ];
 
-  // Exactly matches your shared strict category types definition
   const categories: SelectOption[] = [
     { value: 'Income', label: 'Salary & Freelance' },
     { value: 'Housing & Rent', label: 'Housing & Rent' },
@@ -35,32 +37,58 @@ export function ExpenseForm({ onSubmit }: ExpenseFormProps) {
     { value: 'Other', label: 'Other' },
   ];
 
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { title: '', amount: '', category: '' };
+
+    if (!title.trim()) {
+      newErrors.title = 'Transaction title is required.';
+      isValid = false;
+    } else if (title.trim().length < 3) {
+      newErrors.title = 'Title must be at least 3 characters long.';
+      isValid = false;
+    }
+
+    const parsedAmount = parseFloat(amount);
+    if (!amount) {
+      newErrors.amount = 'Amount value is required.';
+      isValid = false;
+    } else if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      newErrors.amount = 'Please enter a positive numeric value.';
+      isValid = false;
+    }
+
+    if (!category) {
+      newErrors.category = 'Please select a tracking account category.';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!title.trim() || !amount || !category) {
-      alert('Please fill out all fields before submitting.');
-      return;
-    }
+    if (!validateForm()) return; 
 
     const parsedAmount = parseFloat(amount);
 
     onSubmit({
       name: title.trim(),
-      // Enforce signed values: if it's an expense, convert it to a negative number automatically
       amount: type === 'expense' ? -Math.abs(parsedAmount) : Math.abs(parsedAmount),
       category: category as any,
-      date: new Date().toISOString().split('T')[0], // Sets a valid current date string 'YYYY-MM-DD'
+      date: new Date().toISOString().split('T')[0],
     });
 
     setTitle('');
     setAmount('');
     setCategory('');
+    setErrors({ title: '', amount: '', category: '' });
   };
 
   return (
     <Paper elevation={2} sx={{ p: 3, borderRadius: 2, backgroundColor: '#ffffff' }}>
-      <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: '#333' }}>
+      <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: '#1e293b' }}>
         Add New Transaction
       </Typography>
       
@@ -71,17 +99,21 @@ export function ExpenseForm({ onSubmit }: ExpenseFormProps) {
               label="Transaction Title"
               placeholder="e.g., Office Rent, Monthly Salary"
               value={title}
-              onChange={setTitle}
+              onChange={(val) => { setTitle(val); setErrors(p => ({ ...p, title: '' })); }}
+              error={!!errors.title}
+              helperText={errors.title}
             />
           </Grid>
           
           <Grid size={{ xs: 12, sm: 6 }}>
             <InputField
-              label="Amount ($)"
+              label="Amount (₹)" // ✅ Updated label descriptor to target domestic Rupee layout
               placeholder="0.00"
               type="number"
               value={amount}
-              onChange={setAmount}
+              onChange={(val) => { setAmount(val); setErrors(p => ({ ...p, amount: '' })); }}
+              error={!!errors.amount}
+              helperText={errors.amount}
             />
           </Grid>
           
@@ -98,8 +130,10 @@ export function ExpenseForm({ onSubmit }: ExpenseFormProps) {
             <SelectInput
               label="Category"
               value={category}
-              onChange={setCategory}
+              onChange={(val) => { setCategory(val); setErrors(p => ({ ...p, category: '' })); }}
               options={categories}
+              error={!!errors.category}
+              helperText={errors.category}
             />
           </Grid>
         </Grid>

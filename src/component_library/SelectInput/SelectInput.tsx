@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material';
 
 export interface SelectOption {
   value: string;
@@ -14,6 +14,8 @@ export interface SelectInputProps {
   onChange: (value: string) => void;
   options: SelectOption[];
   fullWidth?: boolean;
+  error?: boolean;        
+  helperText?: string;    
 }
 
 export function SelectInput({
@@ -22,13 +24,13 @@ export function SelectInput({
   onChange,
   options,
   fullWidth = true,
+  error = false,          
+  helperText = '',        
 }: SelectInputProps) {
-  // Generate a lowercase, web-safe token string out of the label text
   const labelId = `select-${label.toLowerCase().replace(/\s+/g, '-')}`;
 
   return (
-    <FormControl fullWidth={fullWidth} sx={{ mb: 2 }}>
-      {/* Explicitly bind the label to the select component via id and labelId props */}
+    <FormControl fullWidth={fullWidth} sx={{ mb: 2 }} error={error}>
       <InputLabel id={`${labelId}-label`} shrink>{label}</InputLabel>
       <Select
         labelId={`${labelId}-label`}
@@ -48,6 +50,8 @@ export function SelectInput({
           </MenuItem>
         ))}
       </Select>
+      
+      {error && helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   );
 }

@@ -11,7 +11,7 @@ describe('TransactionTable Core Component Unit Tests', () => {
       title: 'Electricity Bill',
       amount: 120.45,
       type: 'expense',
-      category: 'utilities',
+      category: 'Utilities',
       date: '2026-06-28',
     },
   ];
@@ -28,15 +28,14 @@ describe('TransactionTable Core Component Unit Tests', () => {
     const mockOnDelete = jest.fn();
     render(<TransactionTable transactions={mockTransactions} onDelete={mockOnDelete} />);
 
-    // Confirm row details are printed onto the ledger viewport cleanly
     expect(screen.getByText('Electricity Bill')).toBeInTheDocument();
-    expect(screen.getByText('-$120.45')).toBeInTheDocument();
+    
+    // ✅ Updated assertion rule to expect our new localized theme indicator token (₹)
+    expect(screen.getByText('-₹120.45')).toBeInTheDocument();
 
-    // Fire the removal click action target loop
     const deleteButton = screen.getByRole('button', { name: /delete transaction electricity bill/i });
     await userEvent.click(deleteButton);
 
-    // Assert that the callback returns the precise targeted row string token identifier
     expect(mockOnDelete).toHaveBeenCalledWith('tx-999');
   });
 });

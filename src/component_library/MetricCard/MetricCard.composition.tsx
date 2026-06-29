@@ -11,8 +11,7 @@ export function TotalBalanceCardComposition() {
   return (
     <MetricCard
       title="TOTAL BALANCE"
-      value="$4,250.00"
-      textColor="#3f51b5"
+      value="₹4,250.00"
       icon={<AccountBalanceWalletIcon />}
     />
   );
@@ -23,8 +22,7 @@ export function MonthlyIncomeCardComposition() {
   return (
     <MetricCard
       title="MONTHLY INCOME"
-      value="+$6,000.00"
-      textColor="#2e7d32"
+      value="+₹6,000.00"
       icon={<TrendingUpIcon />}
     />
   );
@@ -35,8 +33,7 @@ export function MonthlyExpensesCardComposition() {
   return (
     <MetricCard
       title="MONTHLY EXPENSES"
-      value="-$1,750.00"
-      textColor="#d32f2f"
+      value="-₹1,750.00"
       icon={<TrendingDownIcon />}
     />
   );
