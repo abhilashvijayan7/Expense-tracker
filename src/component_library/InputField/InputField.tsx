@@ -3,16 +3,17 @@
 import React from 'react';
 import { TextField } from '@mui/material';
 
-// Define the properties our custom input field accepts
 export interface InputFieldProps {
     label: string;
     placeholder?: string;
     value: string | number;
     onChange: (value: string) => void;
-    type?: 'text' | 'number';
+    type?: 'text' | 'number' | 'password'; 
     multiline?: boolean;
     rows?: number;
     fullWidth?: boolean;
+    error?: boolean;
+    helperText?: string;
 }
 
 export function InputField({
@@ -24,6 +25,8 @@ export function InputField({
     multiline = false,
     rows = 1,
     fullWidth = true,
+    error = false,
+    helperText = '',
 }: InputFieldProps) {
     return (
         <TextField
@@ -35,6 +38,8 @@ export function InputField({
             multiline={multiline}
             rows={rows}
             fullWidth={fullWidth}
+            error={error}
+            helperText={helperText}
             variant="outlined"
             slotProps={{
                 inputLabel: { shrink: true }
