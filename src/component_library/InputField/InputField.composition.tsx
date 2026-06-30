@@ -19,7 +19,6 @@ export function InputFieldFormComposition() {
         A diagnostic utility sandbox verifying atomic input validation tokens.
       </Typography>
 
-      {/* Standard text input variation for the transaction label */}
       <InputField
         label="Transaction Name"
         placeholder="e.g. AWS Cloud Services"
@@ -29,7 +28,6 @@ export function InputFieldFormComposition() {
         helperText={showSandboxError && !name ? 'Field context name constraint missing.' : ''}
       />
 
-      {/* Updated to show native local currency verification indicators */}
       <InputField
         label="Amount (₹)"
         placeholder="0.00"
@@ -40,7 +38,6 @@ export function InputFieldFormComposition() {
         helperText={showSandboxError && !amount ? 'Value volume indicator is required.' : ''}
       />
 
-      {/* Expandable Multiline textarea variation for optional notes */}
       <InputField
         label="Memo / Notes"
         placeholder="Optional details..."

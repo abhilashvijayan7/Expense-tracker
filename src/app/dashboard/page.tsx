@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-// ✅ 1. Update this import header line to target Grid2
 import { Box, Typography, Grid as Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, CircularProgress } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
@@ -95,7 +94,6 @@ export default function DashboardPage() {
       <Box sx={{ flexGrow: 1, p: 4 }}>
         <Typography variant="h4" sx={{ fontWeight: 700, mb: 4 }}>Executive Overview</Typography>
         
-        {/* ✅ 2. This size format now maps flawlessly to the Grid2 layout motor */}
         <Grid container spacing={3} sx={{ mb: 4 }}>
           <Grid size={{ xs: 12, sm: 4 }}><MetricCard title="TOTAL BALANCE" value={`₹${netBalance.toFixed(2)}`} /></Grid>
           <Grid size={{ xs: 12, sm: 4 }}><MetricCard title="MONTHLY INCOME" value={`₹${totalIncome.toFixed(2)}`} /></Grid>

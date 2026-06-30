@@ -20,7 +20,6 @@ describe('FinTrack Axios API Service Layer Unit Tests', () => {
   beforeEach(() => {
     localStorage.clear();
     
-    // Seed isolation metrics inside the storage container mock
     localStorage.setItem('fintrack_users', JSON.stringify([
       { id: "user_101", name: "John Doe", email: "john@company.com", password: "password123" }
     ]));

@@ -44,7 +44,6 @@ describe('SelectInput Component Library Unit Tests', () => {
     expect(mockOnChange).toHaveBeenCalledWith('income');
   });
 
-  // ✅ New Test Case: Verifies your fresh form validation features work
   it('should display the helper text message cleanly when error state is active', () => {
     const customErrorMessage = 'Please select an allocation ledger category account.';
     
@@ -59,7 +58,6 @@ describe('SelectInput Component Library Unit Tests', () => {
       />
     );
 
-    // Search for the error string text inside the rendered DOM tree
     const errorTextElement = screen.getByText(customErrorMessage);
     expect(errorTextElement).toBeInTheDocument();
   });

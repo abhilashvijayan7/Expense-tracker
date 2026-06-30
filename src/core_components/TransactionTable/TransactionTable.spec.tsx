@@ -30,7 +30,6 @@ describe('TransactionTable Core Component Unit Tests', () => {
 
     expect(screen.getByText('Electricity Bill')).toBeInTheDocument();
     
-    // ✅ Updated assertion rule to expect our new localized theme indicator token (₹)
     expect(screen.getByText('-₹120.45')).toBeInTheDocument();
 
     const deleteButton = screen.getByRole('button', { name: /delete transaction electricity bill/i });

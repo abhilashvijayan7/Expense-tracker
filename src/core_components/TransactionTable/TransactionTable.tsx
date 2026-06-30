@@ -30,7 +30,7 @@ export function TransactionTable({ transactions, onDelete }: TransactionTablePro
         borderRadius: 2, 
         overflow: 'hidden',
         width: '100%',
-        overflowX: 'auto' // ✅ Enforces full responsiveness on small touch screens
+        overflowX: 'auto' 
       }}
     >
       {transactions.length === 0 ? (
@@ -38,7 +38,7 @@ export function TransactionTable({ transactions, onDelete }: TransactionTablePro
           No transactions recorded yet. Use the form above to add your first transaction history item.
         </Typography>
       ) : (
-        <Box sx={{ minWidth: 600 }}> {/* Guarantees layout structural baseline inside scroll containers */}
+        <Box sx={{ minWidth: 600 }}> 
           <Table aria-label="transaction history ledger">
             <TableHead sx={{ backgroundColor: '#f8fafc' }}>
               <TableRow>
@@ -76,7 +76,6 @@ export function TransactionTable({ transactions, onDelete }: TransactionTablePro
                       color: row.type === 'income' ? '#2e7d32' : '#c62828' 
                     }}
                   >
-                    {/* ✅ Updated currency symbol formatting to Rupee strings */}
                     {row.type === 'income' ? '+' : '-'}₹{Math.abs(row.amount).toFixed(2)}
                   </TableCell>
                   <TableCell align="center">

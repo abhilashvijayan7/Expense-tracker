@@ -6,7 +6,6 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 
-// Variant 1: Checking our Balance layout structure
 export function TotalBalanceCardComposition() {
   return (
     <MetricCard
@@ -17,7 +16,6 @@ export function TotalBalanceCardComposition() {
   );
 }
 
-// Variant 2: Checking our Income layout structure
 export function MonthlyIncomeCardComposition() {
   return (
     <MetricCard
@@ -28,7 +26,6 @@ export function MonthlyIncomeCardComposition() {
   );
 }
 
-// Variant 3: Checking our Expense layout structure
 export function MonthlyExpensesCardComposition() {
   return (
     <MetricCard

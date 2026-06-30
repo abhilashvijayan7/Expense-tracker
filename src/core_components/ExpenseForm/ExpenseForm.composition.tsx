@@ -6,7 +6,6 @@ import { Box, Typography } from '@mui/material';
 
 export function ExpenseFormComposition() {
   const handleMockSubmit = (data: any) => {
-    // Elegant background debugger streaming instead of layout breaking alert popups
     console.log('🚀 [Form Submission Capture Debugger Engine]:', {
       ...data,
       formattedAmount: data.amount >= 0 ? `₹${data.amount}` : `-₹${Math.abs(data.amount)}`

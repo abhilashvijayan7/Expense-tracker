@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Box, Button, Paper, Typography, Grid as Grid } from '@mui/material'; // ✅ Swapped to modern Grid2 engine
+import { Box, Button, Paper, Typography, Grid as Grid } from '@mui/material'; 
 import { InputField } from '../../component_library/InputField';
 import { SelectInput, SelectOption } from '../../component_library/SelectInput';
 
@@ -107,7 +107,7 @@ export function ExpenseForm({ onSubmit }: ExpenseFormProps) {
           
           <Grid size={{ xs: 12, sm: 6 }}>
             <InputField
-              label="Amount (₹)" // ✅ Updated label descriptor to target domestic Rupee layout
+              label="Amount (₹)" 
               placeholder="0.00"
               type="number"
               value={amount}

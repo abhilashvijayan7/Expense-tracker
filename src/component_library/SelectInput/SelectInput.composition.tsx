@@ -9,7 +9,6 @@ export function SelectInputComposition() {
   const [type, setType] = useState('expense');
   const [simulateError, setSimulateError] = useState(false);
 
-  // Synchronized directly with core business domain enums
   const budgetCategories: SelectOption[] = [
     { value: 'Housing & Rent', label: 'Housing & Rent' },
     { value: 'Groceries', label: 'Groceries' },
@@ -31,7 +30,6 @@ export function SelectInputComposition() {
         Interactive testing frame for verification of selection drop menu behaviors.
       </Typography>
 
-      {/* 1. Transaction Type Dropdown Selection */}
       <SelectInput
         label="Transaction Type"
         value={type}
@@ -39,7 +37,6 @@ export function SelectInputComposition() {
         options={transactionTypes}
       />
 
-      {/* 2. Budget Category Dropdown Selection */}
       <SelectInput
         label="Budget Category"
         value={category}

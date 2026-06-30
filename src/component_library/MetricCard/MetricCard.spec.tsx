@@ -18,19 +18,17 @@ describe('MetricCard Component Library Unit Tests', () => {
     expect(valueElement).toHaveStyle({ color: '#3f51b5' });
   });
 
-  // ✅ New Test Case: Verifies automatic semantic coloring for income titles
   it('should implicitly resolve green text colors when the header specifies INCOME context', () => {
     render(<MetricCard title="MONTHLY INCOME" value="₹3,000" />);
     
     const valueElement = screen.getByText('₹3,000');
-    expect(valueElement).toHaveStyle({ color: '#2e7d32' }); // Default emerald green
+    expect(valueElement).toHaveStyle({ color: '#2e7d32' }); 
   });
 
-  // ✅ New Test Case: Verifies automatic semantic coloring for negative balance values
   it('should implicitly resolve red text colors when a net BALANCE metric goes negative', () => {
     render(<MetricCard title="TOTAL BALANCE" value="-₹150.00" />);
     
     const valueElement = screen.getByText('-₹150.00');
-    expect(valueElement).toHaveStyle({ color: '#c62828' }); // Default crimson red
+    expect(valueElement).toHaveStyle({ color: '#c62828' }); 
   });
 });
