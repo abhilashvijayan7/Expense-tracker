@@ -66,3 +66,14 @@ export default function LedgerPage() {
     </Box>
   );
 }
+
+/**
+ * Banking Team -> Page -> Bank Details -> Ledger -> Transaction History
+ * bit
+ * [lang]/(retailer)/dashboard/page.tsx
+ * [querId]/(retailer)
+ * abortController
+ * Debouncer NextJs
+ * i18 languate Next 
+ * Server Side Rendering/ Client side Rendering.
+*/

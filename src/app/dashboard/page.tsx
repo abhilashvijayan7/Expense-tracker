@@ -25,6 +25,7 @@ export default function DashboardPage() {
   useEffect(() => {
     setIsMounted(true);
   }, []);
+// update with useRef
 
   useEffect(() => {
     if (isMounted && !isAuthenticated) {
@@ -105,3 +106,5 @@ export default function DashboardPage() {
     </Box>
   );
 }
+
+// husky - pre-commit hook

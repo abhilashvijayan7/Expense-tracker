@@ -68,7 +68,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center'}}>
+    <Box sx={{  minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
       <Container maxWidth="md">
         <Paper elevation={4} sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, borderRadius: 4, overflow: 'hidden', minHeight: 480 }}>
           {/* Left branding panel */}
@@ -112,7 +112,6 @@ export default function RegisterPage() {
             <Button type="submit" variant="contained" fullWidth sx={{ py: 1.5, mt: 1, textTransform: 'none', fontWeight: 'bold', bgcolor: '#1e3a8a' }}>
               Create Account
             </Button>
-            
             
             <Typography variant="body2" sx={{ mt: 2.5, textAlign: 'center', color: '#4a5568' }}>
               Already have an account?{' '}
